@@ -1,7 +1,7 @@
 import uuid
 
 from django.db import models
-from rest_framework.validators import UniqueTogetherValidator
+from django.utils import timezone
 
 
 class Person(models.Model):
@@ -11,6 +11,7 @@ class Person(models.Model):
     telephone = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
     type = models.CharField(max_length=255)
+    date_saved = models.DateTimeField(auto_now_add=True, editable=False)
 
 
 class Journey(models.Model):
@@ -22,6 +23,7 @@ class Journey(models.Model):
     driver = models.ForeignKey(Person, on_delete=models.CASCADE)
     available_space = models.CharField(max_length=255)
     amount = models.IntegerField()
+    date_saved = models.DateTimeField(auto_now_add=True, editable=False)
 
 
 class Booking(models.Model):
@@ -29,7 +31,7 @@ class Booking(models.Model):
     journey = models.ForeignKey(Journey, related_name='journey', on_delete=models.CASCADE)
     client = models.ForeignKey(Person, on_delete=models.CASCADE)
     booking_date = models.DateField()
-    booking_time = models.TimeField()
+    booking_time = models.TimeField(default=timezone.now)
 
 
 class Payment(models.Model):

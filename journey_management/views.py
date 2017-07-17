@@ -1,14 +1,14 @@
 from rest_framework import generics
 
-from journey_management.serializer import DriverSerializer, ClientSerializer, JourneySerializer, BookingSerializer, \
-    PaymentSerializer
-from .models import Driver, Client, Journey, Booking, Payment
+from journey_management.serializer import JourneySerializer, BookingSerializer, \
+    PaymentSerializer, PersonSerializer
+from .models import Person, Journey, Booking, Payment
 
 
 class DriverView(generics.ListCreateAPIView):
     """This class defines the create behavior of our rest api."""
-    queryset = Driver.objects.all()
-    serializer_class = DriverSerializer
+    queryset = Person.objects.all()
+    serializer_class = PersonSerializer
 
     def perform_create(self, serializer):
         """Save the post data when creating a new Driver."""
@@ -17,8 +17,8 @@ class DriverView(generics.ListCreateAPIView):
 
 class ClientView(generics.ListCreateAPIView):
     """This class defines the create behavior of our rest api."""
-    queryset = Client.objects.all()
-    serializer_class = ClientSerializer
+    queryset = Person.objects.all()
+    serializer_class = PersonSerializer
 
     def perform_create(self, serializer):
         """Save the post data when creating a new Client."""
