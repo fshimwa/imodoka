@@ -1,23 +1,15 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
 
-from journey_management.models import Driver, Client, Journey, Booking, Payment
+from journey_management.models import Person, Journey, Booking, Payment
 
 
-class DriverSerializer(serializers.ModelSerializer):
+class PersonSerializer(serializers.ModelSerializer):
     """Serializer to map the Model instance into JSON format."""
 
     class Meta:
         """Meta class to map serializer's fields with the model fields."""
-        model = Driver
-        fields = ('id', 'fName', 'lName', 'telephone', 'email', 'type')
-
-
-class ClientSerializer(serializers.ModelSerializer):
-    """Serializer to map the Model instance into JSON format."""
-
-    class Meta:
-        """Meta class to map serializer's fields with the model fields."""
-        model = Client
+        model = Person
         fields = ('id', 'fName', 'lName', 'telephone', 'email', 'type')
 
 
@@ -36,7 +28,13 @@ class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         """Meta class to map serializer's fields with the model fields."""
         model = Booking
-        fields = ('id', 'journey', 'client', ' booking_date')
+        fields = ('id', 'journey', 'client', ' booking_date', 'booking_time')
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Booking.objects.all(),
+                fields=('client', 'booking_date', 'booking_time')
+            )
+        ]
 
 
 class PaymentSerializer(serializers.ModelSerializer):
